@@ -104,4 +104,74 @@ public class UsuarioDAO {
 		return lista;
 	}
 	
+	public Usuario buscarPorId(int id) {
+		String sql = "SELECT * FROM USUARIO WHERE ID =?";
+		Usuario usuario = null;
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			preparador.setInt(1,id);
+			
+			ResultSet resultado = preparador.executeQuery();
+			
+			if(resultado.next()) {
+				
+				usuario = new Usuario();
+				usuario.setId(resultado.getInt("id"));
+				usuario.setNome(resultado.getString("nome"));
+				usuario.setLogin(resultado.getString("login"));
+				usuario.setSenha(resultado.getString("senha"));
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return usuario;
+	}
+	
+	public List<Usuario> buscarPorNome(String nome) {
+		String sql = "SELECT * FROM USUARIO WHERE nome like ?";
+		List<Usuario> lista= new ArrayList<Usuario>();
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			preparador.setString(1,"%"+nome+"%");
+			
+			ResultSet resultado = preparador.executeQuery();
+			
+			while(resultado.next()) {
+				
+				Usuario usuario = new Usuario();
+				usuario.setId(resultado.getInt("id"));
+				usuario.setNome(resultado.getString("nome"));
+				usuario.setLogin(resultado.getString("login"));
+				usuario.setSenha(resultado.getString("senha"));
+				lista.add(usuario);
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	public boolean altenticar(String nome) {
+		String sql = "SELECT * FROM USUARIO WHERE nome like ?";
+		List<Usuario> lista= new ArrayList<Usuario>();
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			preparador.setString(1,"%"+nome+"%");
+			
+			ResultSet resultado = preparador.executeQuery();
+			
+			while(resultado.next()) {
+				
+				Usuario usuario = new Usuario();
+				usuario.setId(resultado.getInt("id"));
+				usuario.setNome(resultado.getString("nome"));
+				usuario.setLogin(resultado.getString("login"));
+				usuario.setSenha(resultado.getString("senha"));
+				lista.add(usuario);
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }
