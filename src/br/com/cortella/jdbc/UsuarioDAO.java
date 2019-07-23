@@ -151,27 +151,47 @@ public class UsuarioDAO {
 		return lista;
 	}
 	
-	public boolean altenticar(String nome) {
-		String sql = "SELECT * FROM USUARIO WHERE nome like ?";
-		List<Usuario> lista= new ArrayList<Usuario>();
+	public Usuario autenticar(Usuario user) {
+		String sql = "SELECT * FROM USUARIO WHERE login = ? and senha = ?";
+		Usuario usuarioRetorno = null;
 		try {
 			PreparedStatement preparador = con.prepareStatement(sql);
-			preparador.setString(1,"%"+nome+"%");
+			preparador.setString(1,user.getLogin());
+			preparador.setString(2,user.getSenha());
 			
 			ResultSet resultado = preparador.executeQuery();
 			
-			while(resultado.next()) {
+			if(resultado.next()) {
 				
-				Usuario usuario = new Usuario();
-				usuario.setId(resultado.getInt("id"));
-				usuario.setNome(resultado.getString("nome"));
-				usuario.setLogin(resultado.getString("login"));
-				usuario.setSenha(resultado.getString("senha"));
-				lista.add(usuario);
+				usuarioRetorno = new Usuario();
+				usuarioRetorno.setId(resultado.getInt("id"));
+				usuarioRetorno.setNome(resultado.getString("nome"));
+				usuarioRetorno.setLogin(resultado.getString("login"));
+				usuarioRetorno.setSenha(resultado.getString("senha"));
 			}	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return lista;
+		return usuarioRetorno;
+	}
+	
+	public boolean existe(Usuario user) {
+		String sql = "SELECT * FROM USUARIO WHERE login = ? and senha = ?";
+		try {
+			PreparedStatement preparador = con.prepareStatement(sql);
+			preparador.setString(1,user.getLogin());
+			preparador.setString(2,user.getSenha());
+			
+			ResultSet resultado = preparador.executeQuery();
+			
+			return resultado.next();
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
+
+
+

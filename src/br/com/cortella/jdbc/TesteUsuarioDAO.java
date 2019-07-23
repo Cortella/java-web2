@@ -10,7 +10,9 @@ public class TesteUsuarioDAO {
 		//testCadastrar();
 		//testAlterar();
 		//testExcluir();
-		testBuscarTodos();
+		//testBuscarTodos();
+		//testAutenticar();
+		testBucarPorId();
 
 	}
 
@@ -47,8 +49,27 @@ public class TesteUsuarioDAO {
 		List<Usuario> listaResultado = usaDao.buscarTodos();
 		for(Usuario u: listaResultado) {
 			System.out.println(u.getId() + " " + u.getNome() + " " + u.getSenha() + " " + u.getLogin());
-		}
+		}	
+	}
+	public static void testAutenticar() {
+		Usuario usuario = new Usuario();
+		usuario.setLogin("jao");
+		usuario.setSenha("jao");
 		
+		UsuarioDAO usaDao = new UsuarioDAO();
+		usaDao.autenticar(usuario);
+		System.out.println(usaDao.autenticar(usuario));
+	}
+	
+	public static void testBucarPorId() {
+		UsuarioDAO usuarioDao = new UsuarioDAO();
+		//System.out.println(usuarioDao.buscarPorId(3));
+		Usuario usu = usuarioDao.buscarPorId(3);
+		if(usu != null) {
+			System.out.println("Nome : " + usu.getNome());
+		}else {
+			System.out.println("Usuario nao encontrado!");
+		}
 		
 	}
 }
