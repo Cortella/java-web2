@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,11 +38,16 @@ public class UsuarioController extends HttpServlet {
 		
 		System.out.println("Chamando metodo GET");
 		
+		//Obter a lista
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		List<Usuario> lista = usuarioDAO.buscarTodos();
 		
-		PrintWriter saida = response.getWriter();
-		saida.println(lista.toString());
+		//Engavetar a lista no request
+		request.setAttribute("lista", lista);
+		
+		//Encaminhamento ao JSP
+		RequestDispatcher saida = request.getRequestDispatcher("listausuarios.jsp");
+		saida.forward(request, response);
 	}
 
 	/**
