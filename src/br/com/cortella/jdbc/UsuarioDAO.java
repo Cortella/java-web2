@@ -158,6 +158,11 @@ public class UsuarioDAO {
 		return lista;
 	}
 	
+	/**
+	  Buscar por login e senha de Usuario
+	  @param usuario Objeto com login e senha a ser consultado no banco
+	  @return null quando nao encontra no banco ou um ponteiro para um objeto usuario completo quando encontra
+	 */
 	public Usuario autenticar(Usuario user) {
 		String sql = "SELECT * FROM USUARIO WHERE login = ? and senha = ?";
 		Usuario usuarioRetorno = null;

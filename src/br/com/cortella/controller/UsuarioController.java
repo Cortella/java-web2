@@ -38,17 +38,69 @@ public class UsuarioController extends HttpServlet {
 		
 		System.out.println("Chamando metodo GET");
 		
-		//Obter a lista
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		List<Usuario> lista = usuarioDAO.buscarTodos();
+		//Captura parametro da tela
+		String acao = request.getParameter("acao");
+		UsuarioDAO usuDao = new UsuarioDAO();
 		
-		//Engavetar a lista no request
-		request.setAttribute("lista", lista);
+		if(acao!=null && acao.equals("exc")) {
+			//Captura parametro da tela
+			
+			String id = request.getParameter("id");
+			
+			Usuario usuario = new Usuario();
+			usuario.setId(Integer.parseInt(id));
+			usuDao.excluir(usuario);
+			
+			//Redirecionando pelo cliente (Browser
+			response.sendRedirect("usucontroller.do?acao=lis");
+		}
 		
-		//Encaminhamento ao JSP
-		RequestDispatcher saida = request.getRequestDispatcher("listausuarios.jsp");
-		saida.forward(request, response);
-	}
+		if(acao!=null && acao.equals("alt")) {
+			//Captura parametro da tela
+			
+			String id = request.getParameter("id");
+			
+			//busca objeto no banco
+			Usuario usuario = usuDao.buscarPorId(Integer.parseInt(id));
+			
+			//seta atributos no request com objeto usuario
+			request.setAttribute("usuario", usuario);
+			
+			//Encaminha para a tela
+			RequestDispatcher saida = request.getRequestDispatcher("frmusuario.jsp");
+			saida.forward(request, response);
+		}
+		
+		if(acao!=null && acao.equals("cad")) {
+			
+			//Instancia novo objeto e set valores vazios
+			Usuario usuario = new Usuario();
+			
+			usuario.setId(0);
+			usuario.setNome("");
+			usuario.setLogin("");
+			usuario.setSenha("");
+			//seta atributos no request com objeto usuario
+			request.setAttribute("usuario", usuario);
+			
+			//Encaminha para a tela
+			RequestDispatcher saida = request.getRequestDispatcher("frmusuario.jsp");
+			saida.forward(request, response);
+		}
+		
+		if(acao!=null && acao.equals("lis")) {
+			//Obter a lista
+			List<Usuario> lista = usuDao.buscarTodos();
+			
+			//Engavetar a lista no request
+			request.setAttribute("lista", lista);
+			
+			//Encaminhamento ao JSP
+			RequestDispatcher saida = request.getRequestDispatcher("listausuarios.jsp");
+			saida.forward(request, response);
+		}
+		
+}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
