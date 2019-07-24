@@ -55,7 +55,14 @@ public class UsuarioDAO {
 		}
 	}
 	
-	public void excluir(Usuario u) {
+	public void salvar(Usuario usuario) {
+		if(usuario.getId() != 0) {
+			alterar(usuario);
+		}else {
+			cadastrar(usuario);
+		}
+	}
+		public void excluir(Usuario u) {
 		//Monta SQL
 		String sql = "DELETE FROM USUARIO WHERE id=?";
 		
