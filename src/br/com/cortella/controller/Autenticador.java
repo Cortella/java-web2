@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import br.com.cortella.entidades.Usuario;
 import br.com.cortella.jdbc.UsuarioDAO;
@@ -29,8 +30,11 @@ public class Autenticador extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		HttpSession sessao = request.getSession(false);
+		if(sessao!=null) {
+			sessao.invalidate();
+		}
+		response.sendRedirect("login.html");
 	}
 
 	/**
@@ -51,6 +55,10 @@ public class Autenticador extends HttpServlet {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuRetorno = usuarioDAO.autenticar(usuario);
 		if(usuRetorno != null) {
+			//Craindo sessao
+			HttpSession sessao = request.getSession();
+			sessao.setMaxInactiveInterval(3000);
+			sessao.setAttribute("usuLogado",usuRetorno);
 			//Encaminhando ao index.jsp
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}else {

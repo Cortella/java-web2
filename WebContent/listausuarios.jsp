@@ -8,8 +8,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Lista - JSTL</title>
+<script type="text/javascript">
+	function confirmaExclusao(id){
+		if(window.confirm("Tem certeza que desaja prosseguir?")){
+			location.href = "usuariocontroller.do?acao = exc&id=" + id;
+		}
+		
+		
+	}
+</script>
 </head>
 <body>
+	<c:import url = "includes/menu.jsp"></c:import>
 	<table border="1">
 		<tr bgcolor = "#EAEAEA">
 			<th> ID </th> <th> Nome </th> <th>Login</th> <th> Senha </th> <th> Acao </th>
@@ -23,7 +33,7 @@
 					<td> ${usu.login}</td>
 					<td> ${usu.senha}</td>
 					<td> 
-					<a href = "usucontroller.do?acao=exc&id=${usu.id}"> Excluir </a>
+					<a href = "javascript:confirmaExclusao(${usu.id})"> Excluir </a>
 				|
 					<a href = "usucontroller.do?acao=alt&id=${usu.id}"> Alterar </a> 
 					</td>
